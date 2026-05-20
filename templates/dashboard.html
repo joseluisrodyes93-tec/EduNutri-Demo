@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNutri - Panel Principal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="top-nav">
+        <div class="nav-content">
+            <span class="app-logo" style="font-size: 1.5rem; font-weight: bold; color: #FFD700;">
+                EduNutri <span style="color: white;">Gestión</span>
+            </span>
+            
+            <a href="/logout" class="btn-logout" style="background-color: var(--secondary-color); color: white; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; font-size: 0.9rem;">
+                Cerrar Sesión
+            </a>
+        </div>
+    </nav>
+
+    <div class="dashboard-wrapper">
+        <header class="dashboard-header">
+            <h1>Bienvenido, {{ nombre_padre }}</h1>
+            <p>Selecciona un perfil para gestionar el menú</p>
+        </header>
+
+        <section class="hijos-grid">
+            {% for hijo in hijos %}
+            <article class="card-hijo">
+                <div class="status-banner">
+                    {% if hijo.pedido_hoy %}
+                        <span class="status-dot {{ 'entregado' if hijo.pedido_hoy.estado == 'Entregado' else 'pendiente' }}"></span>
+                        <small>Hoy: {{ hijo.pedido_hoy.nombre_item }}</small>
+                    {% else %}
+                        <small class="no-order">Sin pedido para hoy</small>
+                    {% endif %}
+                </div>
+
+                <div class="hijo-info">
+                    <div class="hijo-avatar">
+                        {{ hijo.nombre_hijo[0] }}
+                    </div>
+                    <div class="hijo-detalles">
+                        <h2>{{ hijo.nombre_hijo }}</h2>
+                        <p>{{ hijo.grado_curso }}</p>
+                    </div>
+                </div>
+
+                <div class="saldo-box">
+                    <div class="saldo-main">
+                        <span class="label">Saldo Familiar</span>
+                        <span class="monto">${{ "{:.2f}".format(saldo) }}</span>
+                    </div>
+                    {% if hijo.fecha_vencimiento %}
+                    <div class="saldo-vencimiento">
+                        <small>Cobertura hasta: {{ hijo.fecha_vencimiento }}</small>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-actions">
+                    <a href="/seleccionar_menu/{{ hijo.id_student }}" class="btn-primary" style="text-decoration: none; display: block; text-align: center; margin-bottom: 15px;">Planificar Menú</a>
+    
+                    <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 15px;">
+
+                    <!-- Formulario de Recarga Actualizado -->
+                    <form action="/recargar" method="POST" onsubmit="return confirmarPago(this)">
+                        <label style="font-size: 0.8rem; color: #666; display: block; margin-bottom: 5px; text-align: left;">Monto a recargar:</label>
+                        <select name="monto" class="select-recarga" style="margin-bottom: 10px;">
+                            <option value="5">$5.00</option>
+                            <option value="10" selected>$10.00</option>
+                            <option value="20">$20.00</option>
+                            <option value="50">$50.00</option>
+                        </select>
+
+                        <label style="font-size: 0.8rem; color: #666; display: block; margin-bottom: 5px; text-align: left;">Método de Pago:</label>
+                        <select name="metodo_pago" class="select-recarga" style="margin-bottom: 10px;" required>
+                            <option value="Transferencia">Transferencia Bancaria</option>
+                            <option value="Débito">Tarjeta de Débito</option>
+                            <option value="Pensión">Adjuntar a Pensión</option>
+                        </select>
+
+                        <label style="font-size: 0.8rem; color: #666; display: block; margin-bottom: 5px; text-align: left;">Tipo de Plan:</label>
+                        <select name="tipo_plan" class="select-recarga" style="margin-bottom: 15px;" required>
+                            <option value="semanal">Semanal (7 días)</option>
+                            <option value="mensual" selected>Mensual (30 días)</option>
+                        </select>
+
+                        <button type="submit" class="btn-gold">Realizar Recarga</button>
+                    </form>
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+    </div>
+
+    <script>
+    function confirmarPago(form) {
+        // Obtenemos los valores del formulario específico que se envió
+        const monto = form.monto.value;
+        const metodo = form.metodo_pago.options[form.metodo_pago.selectedIndex].text;
+        const plan = form.tipo_plan.options[form.tipo_plan.selectedIndex].text;
+
+        // Ventana de confirmación
+        return confirm(
+            `¿Desea confirmar la recarga?\n\n` +
+            `Valor: $${monto}\n` +
+            `Método: ${metodo}\n` +
+            `Vigencia: ${plan}\n\n` +
+            `El saldo se acreditará a la cuenta familiar.`
+        );
+    }
+    </script>
+</body>
+</html>

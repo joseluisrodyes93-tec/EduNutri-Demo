@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Operativo - Bar EduNutri</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="display: block; background-color: var(--background-blue);">
+
+    <nav class="top-nav">
+        <div class="nav-content">
+            <span class="app-logo">Panel de <strong>Despacho (Bar)</strong></span>
+            <span style="color: var(--gold-color); font-weight: bold;">{{ hoy }}</span>
+            <a href="/logout" class="btn-logout">Cerrar Sistema</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-wrapper" style="max-width: 1100px;">
+        <header style="margin-bottom: 25px; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <h1 style="color: white; margin: 0;">Control de Entregas</h1>
+                <p style="color: #ccc; margin: 5px 0 0 0;">Gestión de consumos diarios por estudiante</p>
+            </div>
+            <div style="background: white; padding: 10px 20px; border-radius: var(--border-radius); border-left: 5px solid var(--gold-color);">
+                <small style="color: #666; display: block;">Total pedidos hoy:</small>
+                <strong style="font-size: 1.5rem; color: var(--primary-color);">{{ entregas|length }}</strong>
+            </div>
+        </header>
+
+        <div class="table-bar">
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead style="background: #f8f9fa;">
+                    <tr>
+                        <th style="padding: 15px; text-align: left; color: var(--primary-color);">Estudiante</th>
+                        <th style="padding: 15px; text-align: left; color: var(--primary-color);">Pedido</th>
+                        <th style="padding: 15px; text-align: left; color: var(--primary-color);">Restricciones Médicas</th>
+                        <th style="padding: 15px; text-align: center; color: var(--primary-color);">Acción</th>
+                    </tr>
+                </thead>
+                <tbody style="background: white;">
+                    {% for registro in entregas %}
+                    <tr style="border-top: 1px solid #eee;">
+                        <td style="padding: 15px;">
+                            <div style="font-weight: bold; font-size: 1rem;">{{ registro.firstname }} {{ registro.lastname }}</div>
+                            <small style="color: #888;">ID: {{ registro.id_student }}</small>
+                        </td>
+                        <td style="padding: 15px;">
+                            <span style="background: #e1f5fe; color: #0277bd; padding: 6px 12px; border-radius: 5px; font-weight: 600;">
+                                {{ registro.nombre_item }}
+                            </span>
+                        </td>
+                        <td style="padding: 15px;">
+                            {% if registro.prohibidos %}
+                                {% for p in registro.prohibidos %}
+                                    <div class="alerta-critica">⚠️ PROHIBIDO: {{ p|upper }}</div>
+                                {% endfor %}
+                            {% else %}
+                                <span style="color: #aaa; font-style: italic;">Sin restricciones</span>
+                            {% endif %}
+                        </td>
+                        <td style="padding: 15px; text-align: center;">
+                            {% if registro.estado == 'Pendiente' %}
+                                <form action="/entregar_pedido/{{ registro.id_pedido }}" method="POST" style="margin:0;">
+                                    <button type="submit" class="btn-gold" style="padding: 8px 15px; font-size: 0.85rem; width: auto;">
+                                        ✔ Entregar
+                                    </button>
+                                </form>
+                            {% else %}
+                                <span class="status-badge status-entregado">🟢 DESPACHADO</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if not entregas %}
+            <div style="text-align: center; padding: 60px; background: white; border-radius: var(--border-radius); margin-top: 20px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/4076/4076432.png" width="100" style="opacity: 0.3;">
+                <h3 style="color: #95a5a6; margin-top: 20px;">No hay pedidos pendientes para hoy.</h3>
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>

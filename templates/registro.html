@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduNutri - Registro de Padres</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="main-container">
+        <header class="login-header">
+            <h1>EduNutri Gestión</h1>
+            <p>Crea tu cuenta de Padre de Familia</p>
+        </header>
+
+        <main class="login-card">
+            <form action="/registro" method="POST" class="login-form">
+                <div class="form-group">
+                    <label for="cedula">Número de Cédula</label>
+                    <input type="text" id="cedula" name="cedula" 
+                           placeholder="Ej: 09XXXXXXXX" required 
+                           maxlength="10" pattern="\d*">
+                </div>
+
+                <div class="form-group">
+                    <label for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" 
+                           placeholder="usuario@gmail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="celular">Número de Celular</label>
+                    <input type="tel" id="celular" name="celular" 
+                           placeholder="0999999999" required 
+                           maxlength="15">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" 
+                           placeholder="Mínimo 6 caracteres" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirmar Contraseña</label>
+                    <input type="password" id="confirm_password" name="confirm_password" 
+                           placeholder="Repite tu contraseña" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Registrarme</button>
+            </form>
+        </main>
+
+        <footer class="login-footer">
+            <p>¿Ya tienes cuenta? <a href="/"><strong>Inicia Sesión</strong></a></p>
+        </footer>
+    </div>
+</body>
+</html>

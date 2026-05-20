@@ -1,0 +1,401 @@
+/* Variables de diseño - Facilitan cambios de color rápidos */
+:root {
+    --primary-color: #004a99;    /* Azul Salesiano */
+    --secondary-color: #d32f2f;  /* Rojo Salesiano */
+    --gold-color: #C5A059;       /* Dorado Institucional */
+    --background-blue: #003366;  /* Azul oscuro para el fondo de pantalla */
+    --white: #ffffff;
+    --border-radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background-blue); /* Cambiado de gris a azul oscuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-header h1 {
+    color: #FFD700; /* Dorado fuerte (Gold) para que resalte sobre el azul */
+    margin-bottom: 5px;
+    font-size: 2.2rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Sombra suave para darle relieve */
+}
+
+.login-header p {
+    color: #ffffff; /* Blanco puro */
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+/* Estilo de la Tarjeta */
+.login-card {
+    background: var(--white);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    border: 3px solid var(--gold-color); /* <-- Agregar esta línea */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* Botón principal estilo App */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+}
+
+.form-footer {
+    margin-top: 15px;
+}
+
+.forgot-link {
+    font-size: 0.9rem;
+    color: #666;
+    text-decoration: none;
+}
+
+.login-footer {
+    margin-top: 25px;
+    color: #ffffff; /* Color para el texto "¿No tienes cuenta?" */
+}
+
+.login-footer a {
+    color: #FFD700; /* Color dorado para el enlace "Regístrate aquí" */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-footer a:hover {
+    text-decoration: underline; /* Efecto al pasar el mouse */
+}
+
+/* Ajustes para móviles muy pequeños */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 20px;
+    }
+}
+
+/* --- Dashboard & Navigation --- */
+.top-nav {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 0; /* Espaciado interno arriba y abajo */
+    width: 100%;
+    position: fixed; /* Para que siempre esté arriba aunque bajes */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    border-bottom: 2px solid var(--gold-color); /* Toque dorado en la barra */
+}
+
+.nav-content {
+    max-width: 1200px; /* Ancho máximo de la barra */
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between; /* Título a la izquierda, Botón a la derecha */
+    align-items: center;
+}
+
+/* Ajuste para que el contenido no se pegue a la barra fija */
+.dashboard-wrapper {
+    max-width: 1000px;
+    margin: 80px auto 30px auto; /* Aumentamos el margen superior (80px) */
+    padding: 0 20px;
+}
+
+.btn-logout {
+    background-color: var(--secondary-color);
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.dashboard-wrapper {
+    max-width: 1200px;         /* Aumentamos de 1000px a 1200px */
+    margin: 100px auto 30px auto; 
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;       /* Centra el título y la rejilla */
+}
+
+.hijos-grid {
+    display: flex;             /* Cambiamos de grid a flex */
+    flex-wrap: wrap;           /* Permite que bajen si no caben (en celulares) */
+    justify-content: center;   /* Centra los cuadros horizontalmente */
+    align-items: flex-start;   /* Alinea los cuadros por la parte superior */
+    gap: 30px;                 /* Espacio entre los dos cuadros */
+    margin-top: 20px;
+    width: 100%;               /* Asegura que use todo el ancho disponible */
+}
+
+/* Forzamos el tamaño de la tarjeta para que no se estire */
+.card-hijo {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    width: 350px;              /* Ancho fijo para que quepan dos en la mayoría de pantallas */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border: 2px solid var(--gold-color);
+}
+
+.status-banner {
+    background: #f8fafc;
+    padding: 8px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+}
+.status-dot.entregado { background-color: #2ecc71; }
+.status-dot.pendiente { background-color: #3498db; }
+
+.hijo-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.hijo-avatar {
+    width: 50px;
+    height: 50px;
+    background: #e0e7ff;
+    color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.saldo-box {
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.monto {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.btn-link-sec {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.dashboard-header h1 {
+    color: var(--white); /* Cambiado para que resalte sobre el fondo azul */
+}
+
+.dashboard-header p {
+    color: #e0e0e0; /* Un gris muy claro para el subtítulo */
+}
+
+.btn-gold {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--gold-color);
+    color: #000; /* Texto oscuro para que resalte sobre el dorado */
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    margin-top: 5px;
+}
+
+.btn-gold:hover {
+    background-color: #b38f4d; /* Un dorado un poco más oscuro al pasar el mouse */
+}
+
+/* Estilo para el selector de monto */
+.select-recarga {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+/* --- Interfaz de Menú / Calendario --- */
+.menu-container {
+    max-width: 900px;
+    margin: 100px auto 40px auto;
+    padding: 20px;
+}
+
+.selector-semana {
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--gold-color);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.grid-dias {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.dia-card {
+    background: var(--white);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    border-left: 5px solid var(--primary-color);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.dia-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.resumen-flotante {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--gold-color);
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+    z-index: 100;
+}
+
+.badge-saldo {
+    background: #e8f4fd;
+    color: var(--primary-color);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* --- Estilos para el Panel del Bar --- */
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.status-pendiente { background: #e3f2fd; color: #1976d2; }
+.status-entregado { background: #e8f5e9; color: #2e7d32; }
+
+.alerta-critica {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.table-bar {
+    width: 100%;
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 2px solid var(--gold-color);
+}
+
+.saldo-vencimiento small {
+    color: #ffd700; /* Color dorado para que resalte sobre el fondo oscuro */
+    font-weight: bold;
+    display: block;
+    margin-top: 5px;
+}

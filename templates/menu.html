@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificar Menú - EduNutri</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body style="display: block; background-color: var(--background-blue);">
+
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="/dashboard" style="color: white; text-decoration: none;">← Volver al Panel</a>
+            <span class="app-logo">Planificación de <strong>Menú</strong></span>
+            <div class="badge-saldo">Saldo: ${{ "{:.2f}".format(saldo) }}</div>
+        </div>
+    </nav>
+
+    <div class="menu-container">
+        <header class="dashboard-header" style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: white;">Planificar para: {{ estudiante.firstname }} {{ estudiante.lastname }}</h1>
+            <p style="color: #ccc;">Selecciona los productos para la semana escolar</p>
+        </header>
+
+        <form action="/guardar_menu/{{ id_estudiante }}" method="POST">
+            <div class="selector-semana">
+                <label for="fecha_inicio" style="font-weight: bold; display: block; margin-bottom: 10px;">Selecciona el Lunes de inicio:</label>
+                <input type="date" name="fecha_inicio" id="fecha_inicio" required 
+                       style="padding: 10px; border-radius: 8px; border: 1px solid var(--gold-color);">
+                <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">* El sistema omitirá automáticamente feriados registrados.</p>
+            </div>
+
+            <!-- SECCIÓN DE MENÚ DIARIO (Solo muestra platos con precio) -->
+            <div class="grid-dias">
+                {% for dia in ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'] %}
+                <div class="dia-card">
+                    <h3>{{ dia }}</h3>
+                    <label style="font-size: 0.85rem; color: #7f8c8d;">Seleccionar opción:</label>
+                    <select name="menu_{{ dia }}" class="select-recarga" style="margin-top: 5px;">
+                        <option value="0">-- Ninguno / Trae de casa --</option>
+                        {% for plato in platos %}
+                        <option value="{{ plato.id_menu }}">{{ plato.nombre_item }} (${{ "{:.2f}".format(plato.precio) }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- SECCIÓN DE CONTROL PARENTAL (Usa la nueva variable de restricciones) -->
+            <div class="selector-semana" style="margin-top: 25px; text-align: left;">
+                <h3 style="color: var(--primary-color); margin-bottom: 5px;">Control Parental / Restricciones</h3>
+                <p style="font-size: 0.85rem; margin-bottom: 15px; color: #555;">Selecciona lo que el bar <strong>NO</strong> debe entregarle:</p>
+                
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    {% for res in restricciones_opciones %}
+                    <label title="{{ res.descripcion }}" style="background: #fff; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; border: 1px solid #ddd; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" name="restriccion" value="{{ res.id_menu }}"> 
+                        <span><strong>{{ res.nombre_item }}</strong></span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <button type="submit" class="btn-primary" style="width: 300px; padding: 15px; font-size: 1.1rem; border: 2px solid var(--gold-color);">
+                    Confirmar y Pagar Planificación
+                </button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
