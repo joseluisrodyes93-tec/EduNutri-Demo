@@ -1,17 +1,19 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 from datetime import datetime, timedelta
+import os  # <-- Agregamos esta librería para leer las variables de entorno
 
 app = Flask(__name__)
 app.secret_key = 'bosco_play_secret_key_2026'
 
-# --- CONFIGURACIÓN DE CONEXIÓN ---
+# --- CONFIGURACIÓN DE CONEXIÓN INTELIGENTE ---
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="", 
-        database="db_colegio_respaldo"
+        host=os.environ.get('DB_HOST', 'localhost'),
+        port=int(os.environ.get('DB_PORT', 3306)),  # Usa el puerto de Aiven en la nube o 3306 en tu PC
+        user=os.environ.get('DB_USER', 'root'),
+        password=os.environ.get('DB_PASSWORD', ''), # Tu contraseña local vacía
+        database=os.environ.get('DB_NAME', 'db_colegio_respaldo') # Tu base local por defecto
     )
 
 @app.route('/')
